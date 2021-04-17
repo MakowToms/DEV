@@ -66,8 +66,47 @@ def labels(c):
     else:
         return " ".join(c.name.split()[:2])
 
+
 fig = plt.figure(figsize=(25, 25), dpi=100)
 axes = fig.add_subplot(1, 1, 1)
 Phylo.draw(tree, axes=axes, do_show=False, label_func=labels)
-plt.savefig("plots/tree1")
+plt.savefig("plots/tree1.svg", format="svg")
 Phylo.draw_ascii(tree)
+
+########
+from math import log
+from Bio import pairwise2
+
+
+def gap_function(x, y):
+    if y==0:
+        return 0
+    elif y==1:
+        return -2
+    return -(2 + y/4.0 + log(y)/2.0)
+
+ref_seq = SeqIO.read("data/project/ref_seq/ref_seq.fasta", "fasta")
+
+seq_test = SeqIO.parse("data/project/clade_G/1618674007149.sequences.fasta", "fasta")
+records = list(seq_test.records)
+
+alignment = pairwise2.align.globalmc(ref_seq.seq, records[0].seq, 5, -4, gap_function, gap_function)
+
+alignment = pairwise2.align.globalxx(ref_seq.seq, records[0].seq)
+
+mrna = ref_seq.seq.transcribe()
+amino = mrna.translate()
+
+Proteins = amino.split("*")
+
+for i in Proteins[:]:
+    if len(i) < 50:
+        Proteins.remove(i)
+
+#Store the protein sequences in a pandas dataframe
+proteinas=pd.DataFrame(Proteins)
+proteinas['amino acid sequence'] = proteinas[0].apply(str)
+proteinas['Protein length'] = proteinas[0].apply(len)
+proteinas.rename(columns={0: "sequence"}, inplace=True)
+pro=proteinas.drop('sequence', axis=1)
+pro= pro.sort_values(by=['Protein length'], ascending=False)
