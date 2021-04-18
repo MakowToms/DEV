@@ -3,11 +3,14 @@ from Bio.Phylo.TreeConstruction import DistanceCalculator, DistanceTreeConstruct
 import networkx
 import matplotlib.pyplot as plt
 import matplotlib
+import matplotlib.cm as cm
 import os
 import pandas as pd
 import numpy as np
 from Bio.Phylo import PhyloXMLIO
 import pickle
+import datetime
+
 
 clades = ["G", "GR", "GRY"]
 records = []
@@ -82,25 +85,27 @@ def labels(c):
 
 def labels_col(c):
     print(c)
-    if c.split(" ")[0] == "GRY":
+    if c.split(" ")[1] == "GRY":
         return colors['darkblue']
-    elif c.split(" ")[0] == "GR":
+    elif c.split(" ")[1] == "GR":
         return colors['blue']
-    elif c.split(" ")[0] == "G":
+    elif c.split(" ")[1] == "G":
         return colors['seagreen']
-    elif c.split(" ")[0] == "GH":
+    elif c.split(" ")[1] == "GH":
         return colors['green']
-    elif c.split(" ")[0] == "S":
+    elif c.split(" ")[1] == "S":
         return colors['lime']
-    elif c.split(" ")[0] == "O":
+    elif c.split(" ")[1] == "O":
         return colors['gold']
-    elif c.split(" ")[0] == "GV":
+    elif c.split(" ")[1] == "GV":
         return colors['darkorange']
-    elif c.split(" ")[0] == "V":
+    elif c.split(" ")[1] == "V":
         return colors['tomato']
-    elif c.split(" ")[0] == "L":
+    elif c.split(" ")[1] == "L":
         return colors['red']
-import datetime
+
+
+# date coloring
 base = datetime.date.fromisoformat("2021-04-10")
 date_list = [str(base - datetime.timedelta(days=x)) for x in range(100)]
 date_list.sort()
@@ -109,6 +114,7 @@ NUM_COLORS = len(date_list)
 col = [cmap(1.*i/NUM_COLORS) for i in range(NUM_COLORS)]
 color_code = dict(zip(date_list, col))
 unique_dates = metadata.sort_values("date").date.unique()
+
 def labels_col2(c):
     print(c)
     try:
@@ -119,29 +125,29 @@ def labels_col2(c):
 
 
 
-matplotlib.rc('font', size=10)
-fig = plt.figure(figsize=(35, 25), dpi=100)
-axes = fig.add_subplot(1, 1, 1)
-Phylo.draw(tree, axes=axes, do_show=False, label_func=labels, label_colors=labels_col)
-plt.axis('off')
-# plt.savefig("plots/tree4", transparent=True)
-plt.savefig("plots/tree4.svg", format="svg", transparent=True)
-Phylo.draw_ascii(tree)
-fig.close()
+# matplotlib.rc('font', size=10)
+# fig = plt.figure(figsize=(35, 25), dpi=100)
+# axes = fig.add_subplot(1, 1, 1)
+# Phylo.draw(tree, axes=axes, do_show=False, label_func=labels, label_colors=labels_col)
+# plt.axis('off')
+# # plt.savefig("plots/tree4", transparent=True)
+# plt.savefig("plots/tree4.svg", format="svg", transparent=True)
+# Phylo.draw_ascii(tree)
+# fig.close()
 
-import matplotlib.cm as cm
+
 matplotlib.rc('font', size=20)
 fig = plt.figure(figsize=(30, 25), dpi=100)
 axes = fig.add_subplot(1, 1, 1)
 Phylo.draw(tree, axes=axes, do_show=False, label_func=labels, label_colors=labels_col2)
 plt.axis('off')
+# color bar
 cbaxes = fig.add_axes([0, 0.1, 0.03, 0.8])
 cb = fig.colorbar(cm.ScalarMappable(cmap="gist_rainbow"), cax=cbaxes)
 cb.set_ticks(np.where([date_list[i] in unique_dates for i in range(len(date_list))])[0]/99)
 cb.set_ticklabels(unique_dates)
 font_size = 15 # Adjust as appropriate.
 cb.ax.tick_params(labelsize=font_size)
-plt.savefig("plots/tree5", transparent=True)
 plt.savefig("plots/tree5.svg", format="svg", transparent=True)
 
 
