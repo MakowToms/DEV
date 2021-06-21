@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "CAPTAIN AMERICA", "label": "CAPTAIN AMERICA", "shape": "dot", "size": 10}, {"id": "HUMAN TORCH/JOHNNY S", "label": "HUMAN TORCH/JOHNNY S", "shape": "dot", "size": 10}, {"id": "IRON MAN/TONY STARK ", "label": "IRON MAN/TONY STARK ", "shape": "dot", "size": 10}, {"id": "MR. FANTASTIC/REED R", "label": "MR. FANTASTIC/REED R", "shape": "dot", "size": 10}, {"id": "SCARLET WITCH/WANDA ", "label": "SCARLET WITCH/WANDA ", "shape": "dot", "size": 10}, {"id": "SPIDER-MAN/PETER PAR", "label": "SPIDER-MAN/PETER PAR", "shape": "dot", "size": 10}, {"id": "THING/BENJAMIN J. GR", "label": "THING/BENJAMIN J. GR", "shape": "dot", "size": 10}, {"id": "THOR/DR. DONALD BLAK", "label": "THOR/DR. DONALD BLAK", "shape": "dot", "size": 10}, {"id": "VISION ", "label": "VISION ", "shape": "dot", "size": 10}, {"id": "WOLVERINE/LOGAN ", "label": "WOLVERINE/LOGAN ", "shape": "dot", "size": 10}]);
+        edges = new vis.DataSet([{"from": "CAPTAIN AMERICA", "to": "HUMAN TORCH/JOHNNY S", "weight": 1, "weights": 70}, {"from": "CAPTAIN AMERICA", "to": "IRON MAN/TONY STARK ", "weight": 1, "weights": 226}, {"from": "CAPTAIN AMERICA", "to": "MR. FANTASTIC/REED R", "weight": 1, "weights": 84}, {"from": "CAPTAIN AMERICA", "to": "SCARLET WITCH/WANDA ", "weight": 1, "weights": 188}, {"from": "CAPTAIN AMERICA", "to": "SPIDER-MAN/PETER PAR", "weight": 1, "weights": 66}, {"from": "CAPTAIN AMERICA", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 76}, {"from": "CAPTAIN AMERICA", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 195}, {"from": "CAPTAIN AMERICA", "to": "VISION ", "weight": 1, "weights": 205}, {"from": "CAPTAIN AMERICA", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 33}, {"from": "HUMAN TORCH/JOHNNY S", "to": "IRON MAN/TONY STARK ", "weight": 1, "weights": 60}, {"from": "HUMAN TORCH/JOHNNY S", "to": "MR. FANTASTIC/REED R", "weight": 1, "weights": 347}, {"from": "HUMAN TORCH/JOHNNY S", "to": "SCARLET WITCH/WANDA ", "weight": 1, "weights": 46}, {"from": "HUMAN TORCH/JOHNNY S", "to": "SPIDER-MAN/PETER PAR", "weight": 1, "weights": 67}, {"from": "HUMAN TORCH/JOHNNY S", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 382}, {"from": "HUMAN TORCH/JOHNNY S", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 68}, {"from": "HUMAN TORCH/JOHNNY S", "to": "VISION ", "weight": 1, "weights": 52}, {"from": "HUMAN TORCH/JOHNNY S", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 27}, {"from": "IRON MAN/TONY STARK ", "to": "MR. FANTASTIC/REED R", "weight": 1, "weights": 59}, {"from": "IRON MAN/TONY STARK ", "to": "SCARLET WITCH/WANDA ", "weight": 1, "weights": 185}, {"from": "IRON MAN/TONY STARK ", "to": "SPIDER-MAN/PETER PAR", "weight": 1, "weights": 40}, {"from": "IRON MAN/TONY STARK ", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 63}, {"from": "IRON MAN/TONY STARK ", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 169}, {"from": "IRON MAN/TONY STARK ", "to": "VISION ", "weight": 1, "weights": 166}, {"from": "IRON MAN/TONY STARK ", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 14}, {"from": "MR. FANTASTIC/REED R", "to": "SCARLET WITCH/WANDA ", "weight": 1, "weights": 47}, {"from": "MR. FANTASTIC/REED R", "to": "SPIDER-MAN/PETER PAR", "weight": 1, "weights": 58}, {"from": "MR. FANTASTIC/REED R", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 365}, {"from": "MR. FANTASTIC/REED R", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 61}, {"from": "MR. FANTASTIC/REED R", "to": "VISION ", "weight": 1, "weights": 48}, {"from": "MR. FANTASTIC/REED R", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 25}, {"from": "SCARLET WITCH/WANDA ", "to": "SPIDER-MAN/PETER PAR", "weight": 1, "weights": 36}, {"from": "SCARLET WITCH/WANDA ", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 44}, {"from": "SCARLET WITCH/WANDA ", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 123}, {"from": "SCARLET WITCH/WANDA ", "to": "VISION ", "weight": 1, "weights": 204}, {"from": "SCARLET WITCH/WANDA ", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 17}, {"from": "SPIDER-MAN/PETER PAR", "to": "THING/BENJAMIN J. GR", "weight": 1, "weights": 70}, {"from": "SPIDER-MAN/PETER PAR", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 51}, {"from": "SPIDER-MAN/PETER PAR", "to": "VISION ", "weight": 1, "weights": 42}, {"from": "SPIDER-MAN/PETER PAR", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 25}, {"from": "THING/BENJAMIN J. GR", "to": "THOR/DR. DONALD BLAK", "weight": 1, "weights": 68}, {"from": "THING/BENJAMIN J. GR", "to": "VISION ", "weight": 1, "weights": 56}, {"from": "THING/BENJAMIN J. GR", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 36}, {"from": "THOR/DR. DONALD BLAK", "to": "VISION ", "weight": 1, "weights": 124}, {"from": "THOR/DR. DONALD BLAK", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 18}, {"from": "VISION ", "to": "WOLVERINE/LOGAN ", "weight": 1, "weights": 18}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+	 
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
